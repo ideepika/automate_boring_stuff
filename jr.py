@@ -5,7 +5,7 @@ from selenium import webdriver
 
 
 # Create a new instance of the Firefox driver
-driver = webdriver.Chrome('/home/deepika/chromedriver')
+driver = webdriver.Chrome('/home/sandesh/projects/automate_boring_stuff/chromedriver')
 
 
 # go to the jec results
