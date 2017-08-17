@@ -18,7 +18,7 @@ def enter_captcha():
     driver.find_element_by_id('TextBox1').send_keys(captcha.upper())
 
     # captcha must be filled after 10 seconds
-    time.sleep(10)
+    time.sleep(5)
 
     # click viewResult button
     driver.find_element_by_id("btnviewresult").click()
@@ -54,6 +54,8 @@ def view_result(roll_number, sem):
         driver.find_element_by_xpath("//*[@id='btnReset']").click()
         view_result(get_roll() , semester)
     except:
+        driver.quit()
+        start_chrome()
         view_result(roll_number, sem)
 
 
@@ -91,10 +93,8 @@ def get_captcha_string(xpath, driver):
         captcha = captcha.readline().strip()
     return captcha
 
-def start_chrome():
-    # Create a new instance of the chrome driver
-    driver = webdriver.Chrome('/home/sandesh/projects/automate_boring_stuff/chromedriver')
 
+def start_chrome():
     # to go to jec result page
     driver.get("http://www.jecjabalpur.ac.in/Exam/Programselect.aspx")
     sbox = driver.find_element_by_xpath("//input[@id='radlstProgram_0']").click()
@@ -102,6 +102,8 @@ def start_chrome():
 
 current_roll = raw_input("Enter first roll no. ")
 semester = int(raw_input("enter semester in integer: "))
+# Create a new instance of the chrome driver
+driver = webdriver.Chrome('/home/sandesh/projects/automate_boring_stuff/chromedriver')
 start_chrome()
 view_result(get_roll(), semester)
 # driver.execute_script("window.history.go(-1)")
