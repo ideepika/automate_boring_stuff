@@ -10,16 +10,14 @@ driver = webdriver.Chrome('/home/sandesh/projects/automate_boring_stuff/chromedr
 # to go to jec result page
 driver.get("http://www.jecjabalpur.ac.in/Exam/Programselect.aspx")
 sbox = driver.find_element_by_xpath("//input[@id='radlstProgram_0']").click()
-# sbox.send_keys("Roll No.")
-# to select the roll no field
-python_button = driver.find_element_by_xpath("//input[@id='txtrollno']").click()
 
-# type text
-text_area = driver.find_element_by_id('txtrollno')
-text_area.send_keys('0201IT151020')
+def view_result(roll_number, sem):
+    # entering roll no.
+    text_area = driver.find_element_by_id('txtrollno')
+    text_area.send_keys(str(roll_number))
 
-# select semester
-driver.find_element_by_xpath("//select[@id='drpSemester']/option[@value='4']").click()
+    # select semester
+    driver.find_element_by_xpath("//select[@id='drpSemester']/option[@value='"+str(sem)+"']").click()
 
 def get_captcha_string(xpath, driver):
     """
@@ -57,7 +55,7 @@ def get_captcha_string(xpath, driver):
         captcha = captcha.readline().strip()
     return captcha
 
-
+view_result('0201IT151029', 4)
 captcha = get_captcha_string("//*[@id='pnlCaptcha']/table/tbody/tr[1]/td/div/img", driver) 
 # entering captcha
 driver.find_element_by_id('TextBox1').send_keys(captcha.upper())
