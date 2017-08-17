@@ -4,30 +4,22 @@ from os import system
 import time
 
 
-# Create a new instance of the Firefox driver
+# Create a new instance of the chrome driver
 driver = webdriver.Chrome('/home/sandesh/projects/automate_boring_stuff/chromedriver')
 
-
-#to go to jec result page
+# to go to jec result page
 driver.get("http://www.jecjabalpur.ac.in/Exam/Programselect.aspx")
 sbox = driver.find_element_by_xpath("//input[@id='radlstProgram_0']").click()
-#sbox.send_keys("Roll No.")
-#to select the roll no field
+# sbox.send_keys("Roll No.")
+# to select the roll no field
 python_button = driver.find_element_by_xpath("//input[@id='txtrollno']").click()
 
-#type text
+# type text
 text_area = driver.find_element_by_id('txtrollno')
 text_area.send_keys('0201IT151020')
 
-#click submit button
-submit_button = driver.find_element_by_xpath("//input[@id='btnviewresult']").click()
-# go to the jec results
-
-
-dropdown = driver.find_element_by_id("drpSemester")
+# select semester
 driver.find_element_by_xpath("//select[@id='drpSemester']/option[@value='4']").click()
-
-#driver.switch_to.frame("Main")
 
 # find the captcha element
 ele_captcha = driver.find_element_by_xpath("//*[@id='pnlCaptcha']/table/tbody/tr[1]/td/div/img")
@@ -45,17 +37,25 @@ img_captcha_base64 = driver.execute_async_script("""
     ele.dispatchEvent(new Event('load'));
     """, ele_captcha)
 
-# save the captcha to a file
+# save the captcha to a file captcha.jpg
 with open(r"captcha.jpg", 'wb') as f:
     f.write(base64.b64decode(img_captcha_base64))
 
 
 
+# cracking captha with tesseract (installed on ubuntu 16.04) and saving to text.text
 system("tesseract -l eng /home/sandesh/projects/automate_boring_stuff/captcha.jpg text")
 
+# reading captcha from text.txt 
 with open("text.txt") as captcha:
     captcha = captcha.readline().strip()
 
-driver.find_element_by_id('TextBox1').send_keys(captcha)
-time.sleep(15)
+
+# entering captcha
+driver.find_element_by_id('TextBox1').send_keys(captcha.upper())
+
+# captcha must be filled after 10 seconds
+time.sleep(1)
+
+# click viewResult button
 driver.find_element_by_id("btnviewresult").click()
