@@ -1,6 +1,7 @@
 from selenium import webdriver
 import base64
 from os import system
+import time
 
 
 # Create a new instance of the Firefox driver
@@ -56,4 +57,5 @@ with open("text.txt") as captcha:
     captcha = captcha.readline().strip()
 
 driver.find_element_by_id('TextBox1').send_keys(captcha)
+time.sleep(15)
 driver.find_element_by_id("btnviewresult").click()
