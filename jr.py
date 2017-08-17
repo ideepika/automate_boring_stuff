@@ -4,12 +4,12 @@ from os import system
 import time
 
 
-# Create a new instance of the chrome driver
-driver = webdriver.Chrome('/home/sandesh/projects/automate_boring_stuff/chromedriver')
+def get_roll():
+    return_value = current_roll
+    current_roll = current_roll[ :-2] + str(int(current_roll[-2:]) + 1).zfill(2)
+    return return_value
 
-# to go to jec result page
-driver.get("http://www.jecjabalpur.ac.in/Exam/Programselect.aspx")
-sbox = driver.find_element_by_xpath("//input[@id='radlstProgram_0']").click()
+
 
 def view_result(roll_number, sem):
     # entering roll no.
@@ -45,8 +45,6 @@ def get_captcha_string(xpath, driver):
     with open(r"captcha.jpg", 'wb') as f:
         f.write(base64.b64decode(img_captcha_base64))
 
-
-
     # cracking captha with tesseract (installed on ubuntu 16.04) and saving to text.text
     system("tesseract -l eng /home/sandesh/projects/automate_boring_stuff/captcha.jpg text")
 
@@ -55,8 +53,19 @@ def get_captcha_string(xpath, driver):
         captcha = captcha.readline().strip()
     return captcha
 
-view_result('0201IT151029', 4)
-captcha = get_captcha_string("//*[@id='pnlCaptcha']/table/tbody/tr[1]/td/div/img", driver) 
+
+# Create a new instance of the chrome driver
+driver = webdriver.Chrome('/home/sandesh/projects/automate_boring_stuff/chromedriver')
+
+current_roll = str(input("Enter first roll no. "))
+semester = int(input("enter semester in integer: "))
+
+# to go to jec result page
+driver.get("http://www.jecjabalpur.ac.in/Exam/Programselect.aspx")
+sbox = driver.find_element_by_xpath("//input[@id='radlstProgram_0']").click()
+
+view_result(get_roll(), semester)
+captcha = get_captcha_string("//*[@id='pnlCaptcha']/table/tbody/tr[1]/td/div/img", driver)
 # entering captcha
 driver.find_element_by_id('TextBox1').send_keys(captcha.upper())
 
@@ -65,3 +74,4 @@ time.sleep(5)
 
 # click viewResult button
 driver.find_element_by_id("btnviewresult").click()
+driver.execute_script("window.history.go(-1)")
