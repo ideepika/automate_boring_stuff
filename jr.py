@@ -22,6 +22,7 @@ def enter_captcha():
 
     # click viewResult button
     driver.find_element_by_id("btnviewresult").click()
+    
     try:
         alrt = driver.switch_to_alert()
         if alrt.text == "you have entered a wrong text":
@@ -50,11 +51,21 @@ def view_result(roll_number, sem):
         
         # deepika's function will be here
         print(roll_number)
+        name = driver.find_element_by_xpath("//*[@id='lblNameGrading']")
+        print(name.text)
+        marks = driver.find_element_by_xpath("//*[@id='lblSGPA']")
+        print(marks.text)
+        pass_status = driver.find_element_by_xpath("//*[@id='lblResultNewGrading']")
+        print(pass_status.text)
+  
+
 
         driver.find_element_by_xpath("//*[@id='btnReset']").click()
         view_result(get_roll() , semester)
     except:
+        global driver
         driver.quit()
+        driver = webdriver.Chrome('/home/sandesh/projects/automate_boring_stuff/chromedriver')
         start_chrome()
         view_result(roll_number, sem)
 
