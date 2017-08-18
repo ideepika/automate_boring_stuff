@@ -5,6 +5,7 @@ import time
 from selenium.common.exceptions import NoAlertPresentException
 
 
+
 def get_roll():
     global current_roll
     return_value = current_roll
@@ -22,7 +23,7 @@ def enter_captcha():
 
     # click viewResult button
     driver.find_element_by_id("btnviewresult").click()
-    
+
     try:
         alrt = driver.switch_to_alert()
         if alrt.text == "you have entered a wrong text":
@@ -35,10 +36,11 @@ def enter_captcha():
             view_result(get_roll() , semester)
     except NoAlertPresentException as e: 
         print("no alert")
-    
+
 
 
 def view_result(roll_number, sem):
+    global driver
     try:
         # entering roll no.
         text_area = driver.find_element_by_id('txtrollno')
@@ -46,7 +48,7 @@ def view_result(roll_number, sem):
 
         # select semester
         driver.find_element_by_xpath("//select[@id='drpSemester']/option[@value='"+str(sem)+"']").click()
-    
+
         enter_captcha()
         
         # deepika's function will be here
@@ -63,7 +65,6 @@ def view_result(roll_number, sem):
         driver.find_element_by_xpath("//*[@id='btnReset']").click()
         view_result(get_roll() , semester)
     except:
-        global driver
         driver.quit()
         driver = webdriver.Chrome('/home/sandesh/projects/automate_boring_stuff/chromedriver')
         start_chrome()
@@ -111,8 +112,8 @@ def start_chrome():
     sbox = driver.find_element_by_xpath("//input[@id='radlstProgram_0']").click()
 
 
-current_roll = raw_input("Enter first roll no. ")
-semester = int(raw_input("enter semester in integer: "))
+current_roll = input("Enter first roll no. ")
+semester = int(input("enter semester in integer: "))
 # Create a new instance of the chrome driver
 driver = webdriver.Chrome('/home/sandesh/projects/automate_boring_stuff/chromedriver')
 start_chrome()
