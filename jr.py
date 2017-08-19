@@ -14,16 +14,18 @@ def get_roll():
         current_roll = input("enter first diploma roll: ").upper()
     return return_value
 
+
 def data_to_csv():
     global driver
     # return's output to unique id field
+
     def get_elements_by_xpath(driver, xpath):
         return [entry.text for entry in driver.find_elements_by_id(xpath)]
 
-    search_entries = [("Name", "lblNameGrading")
-        , ("RollNo", 'lblRollNoGrading')
-        , ("resultText", 'lblSGPA')
-        , ("pass_status", 'lblResultNewGrading')]
+    search_entries = [("Name", "lblNameGrading"),
+                      ("RollNo", 'lblRollNoGrading'),
+                      ("resultText", 'lblSGPA'),
+                      ("pass_status", 'lblResultNewGrading')]
     with open(out_file_name(), 'a') as f_output:
         csv_output = csv.writer(f_output)
         entries = []
