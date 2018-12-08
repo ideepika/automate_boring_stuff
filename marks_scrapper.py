@@ -5,6 +5,9 @@ import time
 from selenium.common.exceptions import NoAlertPresentException
 import csv
 
+ 
+print("This scrapper requires chromedriver,
+enter complete path where chromedriver is present. ")
 
 def get_roll():
     global current_roll
@@ -92,8 +95,7 @@ def view_result(roll_number, sem):
     except Exception as e:
         print(e)
         driver.quit()
-        driver = webdriver.Chrome(
-                '/home/sandesh/projects/automate_boring_stuff/chromedriver')
+        driver = webdriver.Chrome(home)
         start_chrome()
         view_result(roll_number, sem)
 
@@ -127,7 +129,7 @@ def get_captcha_string(xpath, driver):
     # cracking captha with tesseract (installed on ubuntu 16.04) and
     # saving to text.text
     system("tesseract -l eng" +
-           " /home/sandesh/projects/automate_boring_stuff/captcha.jpg text")
+           " home/deepika/projects/automate_boring_stuff/captcha.jpg text")
 
     # reading captcha from text.txt
     with open("text.txt") as captcha:
@@ -148,13 +150,19 @@ def out_file_name():
 
 current_roll = input("Enter first roll no. ").upper()
 semester = int(input("enter semester in integer: "))
+
 # Create a new instance of the chrome driver
-driver = webdriver.Chrome(
-        '/home/sandesh/projects/automate_boring_stuff/chromedriver')
+
+home = input()
+driver = webdriver.Chrome(home)
+
 start_chrome()
+
 with open(out_file_name(), 'w') as f_output:
     csv_output = csv.writer(f_output)
-    # Write header
+
+# Write header
     csv_output.writerow(["Name", "RollNo", "resultText", "pass_status"])
 view_result(get_roll(), semester)
+
 # driver.execute_script("window.history.go(-1)")
